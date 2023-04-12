@@ -8,13 +8,23 @@ package assignment.dictionary;
 import java.util.*;
 import java.util.Dictionary;
 
-/**
+ class Entry<K, V> {
+    K key;
+    V value;
+    int hashCode;
+    Entry<K, V> next;
+    public Entry(K key, V value, int hashCode){
+        this.key = key;
+        this.value = value;
+        this.hashCode = hashCode;
+    }
+}
 
- */
+
 public class MyHashTable<K,V>
-        extends Dictionary<K,V>
-        implements Map<K,V>, Cloneable, java.io.Serializable {
-
+//        extends Dictionary<K,V>
+//     implements Map<K,V>, Cloneable, java.io.Serializable
+{
     private double loadFactor;
     private int size;
 
@@ -24,6 +34,9 @@ public class MyHashTable<K,V>
     }
 
     public MyHashTable(int initSize) {
+        if (initSize < 0){
+            throw new IllegalArgumentException();
+        }
         this.size = initSize;  //default load factor is 0.75 with the initial capacity is initSize
     }
 
@@ -37,68 +50,9 @@ public class MyHashTable<K,V>
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return size() == 0;
     }
 
-    @Override
-    public boolean containsKey(Object key) {
-        return false;
-    }
-
-    @Override
-    public boolean containsValue(Object value) {
-        return false;
-    }
-
-    @Override
-    public Enumeration<K> keys() {
-        return null;
-    }
-
-    @Override
-    public Enumeration<V> elements() {
-        return null;
-    }
-
-    @Override
-    public V get(Object key) {
-        return null;
-    }
-
-    public V put (K key, V value) {
-        //code this method
-        return null;
-    }
-
-    @Override
-    public V remove(Object key) {
-        return null;
-    }
-
-    @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public Set<K> keySet() {
-        return null;
-    }
-
-    @Override
-    public Collection<V> values() {
-        return null;
-    }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        return null;
-    }
 }
 
 
