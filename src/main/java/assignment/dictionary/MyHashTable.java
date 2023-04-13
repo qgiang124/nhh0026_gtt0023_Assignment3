@@ -88,12 +88,34 @@ public class MyHashTable<K,V>
         newNode.next = node; // next = null if newNode is first in chain
         arrList.add(idx, newNode);
 
+        size++;
+
         System.out.println(hash + " " + idx);
         return null;
     }
 
     public V remove(K key){
-        return null;
+        int idx = getIndex(key);
+        int hash = hashFunc(key);
+
+        Entry<K, V> node = arrList.getEntry(idx);
+        if (node == null)
+            return null;
+        Entry<K, V> prev = null;
+        while (node != null){
+            if (node.key.equals(key) && hash == node.hash)
+                break;
+            prev = node;
+            node = node.next;
+        }
+        if (prev != null){
+            prev.next = node.next;
+        }
+        else
+            arrList.add(idx, node.next);
+
+        size--;
+        return node.value;
     }
 
     public V get(K key){
@@ -108,8 +130,11 @@ public class MyHashTable<K,V>
         return null;
     }
 
-    public boolean containsKey(Object key){
-        return false;
+    public boolean containsKey(K key){
+        V val = get(key);
+        if (val == null)
+            return false;
+        else return true;
     }
 
     public AList<K> keySet(){
@@ -126,7 +151,15 @@ public class MyHashTable<K,V>
     }
 
     public AList<V> values(){
-        return null;
+        AList<V> valueList = new AList<>();
+        Iterator<Entry<K, V>> itr = arrList.iterator();
+        while (itr.hasNext()){
+            Entry<K, V> node = itr.next();
+            if (node != null){
+                valueList.add(node.value);
+            }
+        }
+        return valueList;
     }
 
     // Entry class for all the hash nodes
