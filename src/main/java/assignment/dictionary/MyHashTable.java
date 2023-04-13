@@ -8,41 +8,33 @@ package assignment.dictionary;
 import java.util.*;
 import java.util.Dictionary;
 
- class Entry<K, V> {
-    K key;
-    V value;
-    int hashCode;
-    Entry<K, V> next;
-    public Entry(K key, V value, int hashCode){
-        this.key = key;
-        this.value = value;
-        this.hashCode = hashCode;
-    }
-}
 
 
 public class MyHashTable<K,V>
 //        extends Dictionary<K,V>
 //     implements Map<K,V>, Cloneable, java.io.Serializable
 {
-    private double loadFactor;
+    private float loadFactor;
+    private int threshold;
     private int size;
+    private AList<Entry<K, V>> arrList = new AList<>(500);
 
     public MyHashTable() {
-        this.loadFactor = 0.75; //the default load factor is 0.75
-        this.size = 11;         //the default capacity of the hash table is 11
+        this(500, 0.75f);
     }
 
-    public MyHashTable(int initSize) {
-        if (initSize < 0){
-            throw new IllegalArgumentException();
+    public MyHashTable(int initSize, float ratio) {
+        if ((initSize < 0) || (ratio <= 0.0f)){
+            throw new IllegalArgumentException("size & loadFactor must be greater than 0");
         }
-        this.size = initSize;  //default load factor is 0.75 with the initial capacity is initSize
+        this.loadFactor = ratio;
+        this.threshold = (int) (initSize * loadFactor);
+
     }
 
-    public MyHashTable(int initSize, double ratio) {
-        this.size = initSize;
-        this.loadFactor = ratio;
+    public int hashFunc(K key){
+        int hash = key.hashCode();
+        return hash;
     }
 
     public int size (){
@@ -51,6 +43,67 @@ public class MyHashTable<K,V>
 
     public boolean isEmpty() {
         return size() == 0;
+    }
+
+    public void clear(){
+        arrList.clear();
+    }
+
+    public V put(K key, V value){
+        // throw error if value is null
+        if (value == null){
+            throw new NullPointerException("value is null");
+        }
+        int hash = hashFunc(key);
+        int idx = (hash & 0x7FFFFFFF) % arrList.getLength(); //index in table
+        Entry<K, V> node = new Entry<K, V>(key, value, hash);
+
+        // if key already existed, update with new value
+        Iterator<Entry<K, V>> itr = arrList.iterator();
+        while (itr.hasNext()){
+            if (itr.equals(node)){
+                V old = node.value;
+                node.value = value;
+                return old;
+            }
+        }
+
+        // add a new entry to arrList
+        arrList.add(idx, node);
+        size++;
+        return null;
+    }
+
+    public V remove(K key){
+        return null;
+    }
+
+    public V get(K key){
+        return null;
+    }
+
+    public boolean containsKey(Object key){
+        return false;
+    }
+
+    public AList<K> keySet(){
+        return null;
+    }
+
+    public AList<V> values(){
+        return null;
+    }
+
+    // Entry class for all the hash nodes
+    private static class Entry<K, V> {
+        K key;
+        V value;
+        int hash;
+        public Entry(K key, V value, int hash){
+            this.key = key;
+            this.value = value;
+            this.hash = hash;
+        }
     }
 
 }

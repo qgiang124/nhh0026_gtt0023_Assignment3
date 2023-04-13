@@ -212,7 +212,7 @@ public class AList<T> implements ListInterface<T> , Iterable<T>{
 
     } // end getPostion
     
-      public Iterator<T> iterator(){
+    public Iterator<T> iterator(){
         return new IteratorForAList();
     } // end iterator
     

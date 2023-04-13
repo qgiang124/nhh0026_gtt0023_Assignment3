@@ -70,10 +70,7 @@ public class HashedMapAdaptor<K,V> implements DictionaryInterface<K,V>,
     dictionary.
     @return An iterator that provides sequential access to the search
     keys in the dictionary. */
-    public Iterator<K> getKeyIterator()
-    {
-        return myTable.keySet().iterator();
-    }
+    public Iterator<K> getKeyIterator() { return myTable.keySet().iterator(); }
     
     
     /** Creates an iterator that traverses all values in this dictionary.
