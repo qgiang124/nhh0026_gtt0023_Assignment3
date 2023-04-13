@@ -2,6 +2,8 @@ package assignment.dictionary;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
+
 import javafx.application.Platform;
 
 /**
@@ -113,7 +115,22 @@ public class MisSpellActionThread implements Runnable {
             {
 // ADD CODE HERE
 // >>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//                inString = input.nextLine(); //read 1 line at a time
+//                String[] words = inString.split("[^a-zA-Z]+");
+//
+//                for ( String word : words ) {
+//                    if (checkWord(word, myDictionary)) {
+//                        Wordlet newWord = new Wordlet(word, true);
+//                        myLines.addWordlet(newWord);
+//                    }
+//
+//                    //test if the split working
+//                    System.out.println(word);
+//                }
 
+                //show the wordlet on interface
+                showLines(myLines);
+                myLines.nextLine();
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -136,9 +153,9 @@ public class MisSpellActionThread implements Runnable {
 
         // ADD CODE HERE
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>        
-
-
-
+        if (theDictionary.contains(word)) {
+            result = true;
+        }
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
