@@ -76,6 +76,13 @@ public class MisSpellActionThread implements Runnable {
                 correctWord = input.next();
                 theDictionary.add(correctWord, correctWord);
             }
+            // TESTTTTTT
+            Iterator<String> itr = theDictionary.getKeyIterator();
+            while (itr.hasNext()){
+                String test = itr.next();
+                System.out.println(test);
+            }
+            // END TESTTTTT
             dictionaryLoaded = true;
            
             

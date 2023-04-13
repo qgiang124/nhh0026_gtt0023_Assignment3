@@ -73,6 +73,7 @@ public class MyHashTable<K,V>
         int idx = getIndex(key); //index in table
         Entry<K, V> node = arrList.getEntry(idx);
 
+        // key existed, update with new value
         while(node != null){
             if (node.key.equals(key) && node.hash == hash){
                 node.value = value;
@@ -80,6 +81,13 @@ public class MyHashTable<K,V>
             }
             node = node.next;
         }
+
+        // insert key in AList
+        node = arrList.getEntry(idx);
+        Entry<K, V> newNode = new Entry<>(key, value, hash);
+        newNode.next = node; // next = null if newNode is first in chain
+        arrList.add(idx, newNode);
+
         System.out.println(hash + " " + idx);
         return null;
     }
@@ -105,7 +113,16 @@ public class MyHashTable<K,V>
     }
 
     public AList<K> keySet(){
-        return null;
+        AList<K> keyList = new AList<>();
+        Iterator<Entry<K, V>> itr = arrList.iterator();
+        while (itr.hasNext()){
+            Entry<K, V> node = itr.next();
+            if (node != null){
+                keyList.add(node.key);
+            }
+
+        }
+        return keyList;
     }
 
     public AList<V> values(){
