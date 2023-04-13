@@ -17,10 +17,12 @@ public class MyHashTable<K,V>
     private float loadFactor;
     private int threshold;
     private int size;
-    private AList<Entry<K, V>> arrList = new AList<>(500);
+    private int initSize = 150;
+    private int initCapacity = 500;
+    private AList<Entry<K, V>> arrList;
 
     public MyHashTable() {
-        this(500, 0.75f);
+        this(150, 0.75f);
     }
 
     public MyHashTable(int initSize, float ratio) {
@@ -29,7 +31,12 @@ public class MyHashTable<K,V>
         }
         this.loadFactor = ratio;
         this.threshold = (int) (initSize * loadFactor);
-
+        size = 0;
+        arrList = new AList<>();
+        // create empty slots
+        for (int i = 0; i < initSize; i++){
+            arrList.add(null);
+        }
     }
 
     public int hashFunc(K key){
@@ -45,6 +52,14 @@ public class MyHashTable<K,V>
         return size() == 0;
     }
 
+    private int getIndex(K key){
+        int hash = hashFunc(key);
+        int idx = hash % initSize;
+        if (idx < 0)
+            idx *= -1;
+        return idx;
+    }
+
     public void clear(){
         arrList.clear();
     }
@@ -55,22 +70,17 @@ public class MyHashTable<K,V>
             throw new NullPointerException("value is null");
         }
         int hash = hashFunc(key);
-        int idx = (hash & 0x7FFFFFFF) % arrList.getLength(); //index in table
-        Entry<K, V> node = new Entry<K, V>(key, value, hash);
+        int idx = getIndex(key); //index in table
+        Entry<K, V> node = arrList.getEntry(idx);
 
-        // if key already existed, update with new value
-        Iterator<Entry<K, V>> itr = arrList.iterator();
-        while (itr.hasNext()){
-            if (itr.equals(node)){
-                V old = node.value;
+        while(node != null){
+            if (node.key.equals(key) && node.hash == hash){
                 node.value = value;
-                return old;
+                return value;
             }
+            node = node.next;
         }
-
-        // add a new entry to arrList
-        arrList.add(idx, node);
-        size++;
+        System.out.println(hash + " " + idx);
         return null;
     }
 
@@ -79,6 +89,14 @@ public class MyHashTable<K,V>
     }
 
     public V get(K key){
+        int idx = getIndex(key);
+        int hash = hashFunc(key);
+        Entry<K, V> node = arrList.getEntry(idx);
+        while (node != null){
+            if (node.key.equals(key) && node.hash == hash)
+                return node.value;
+            node = node.next;
+        }
         return null;
     }
 
@@ -99,6 +117,7 @@ public class MyHashTable<K,V>
         K key;
         V value;
         int hash;
+        Entry<K, V> next;
         public Entry(K key, V value, int hash){
             this.key = key;
             this.value = value;
