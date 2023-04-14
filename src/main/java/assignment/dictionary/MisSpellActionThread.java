@@ -115,18 +115,22 @@ public class MisSpellActionThread implements Runnable {
             {
 // ADD CODE HERE
 // >>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//                inString = input.nextLine(); //read 1 line at a time
-//                String[] words = inString.split("[^a-zA-Z]+");
-//
-//                for ( String word : words ) {
-//                    if (checkWord(word, myDictionary)) {
-//                        Wordlet newWord = new Wordlet(word, true);
-//                        myLines.addWordlet(newWord);
-//                    }
-//
-//                    //test if the split working
-//                    System.out.println(word);
-//                }
+                inString = input.nextLine(); //read 1 line at a time
+                Scanner scnr = new Scanner(inString);
+                scnr.useDelimiter("\\b");
+
+                while (scnr.hasNext()) {
+                    aWord = scnr.next();
+                    if (aWord.matches("[a-zA-Z]+")) {
+                        boolean spellCorrect = checkWord(aWord, theDictionary);
+                        Wordlet wordToAdd = new Wordlet(aWord, spellCorrect);
+                        myLines.addWordlet(wordToAdd);
+                    }
+                    else{
+                        Wordlet otherChars = new Wordlet(aWord, true);
+                        myLines.addWordlet(otherChars);
+                    }
+                }
 
                 //show the wordlet on interface
                 showLines(myLines);
