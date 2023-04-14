@@ -39,8 +39,16 @@ public class MyHashTable<K,V>
         }
     }
 
-    public int hashFunc(K key){
-        int hash = Objects.hashCode(key);
+//    public int hashFunc(K key){
+//        int hash = Objects.hashCode(key);
+//        return hash;
+//    }
+
+    public int hashFunc(K key) {
+        int hash = 0;
+        for (int i = 0; i < key.toString().length(); i++) {
+            hash = (hash * 31 + key.toString().charAt(i)) % initSize;
+        }
         return hash;
     }
 
