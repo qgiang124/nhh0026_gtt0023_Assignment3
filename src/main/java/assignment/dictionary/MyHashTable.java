@@ -40,7 +40,7 @@ public class MyHashTable<K,V>
     }
 
     public int hashFunc(K key){
-        int hash = key.hashCode();
+        int hash = Objects.hashCode(key);
         return hash;
     }
 
@@ -86,11 +86,12 @@ public class MyHashTable<K,V>
         node = arrList.getEntry(idx);
         Entry<K, V> newNode = new Entry<>(key, value, hash);
         newNode.next = node; // next = null if newNode is first in chain
-        arrList.add(idx, newNode);
+        arrList.replace(idx, newNode);
 
         size++;
 
-        System.out.println(hash + " " + idx);
+        //System.out.println(newNode.key + ": " + newNode.value);
+        //System.out.println(hash + " " + idx);
         return null;
     }
 
@@ -112,7 +113,7 @@ public class MyHashTable<K,V>
             prev.next = node.next;
         }
         else
-            arrList.add(idx, node.next);
+            arrList.replace(idx, node.next);
 
         size--;
         return node.value;
@@ -123,9 +124,11 @@ public class MyHashTable<K,V>
         int hash = hashFunc(key);
         Entry<K, V> node = arrList.getEntry(idx);
         while (node != null){
-            if (node.key.equals(key) && node.hash == hash)
+            if (node.key.equals(key) && node.hash == hash) {
                 return node.value;
+            }
             node = node.next;
+            //System.out.println(idx + " " + hash + " "+  node.value);
         }
         return null;
     }
