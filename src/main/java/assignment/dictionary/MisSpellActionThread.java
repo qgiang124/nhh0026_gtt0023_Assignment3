@@ -121,16 +121,22 @@ public class MisSpellActionThread implements Runnable {
 // ADD CODE HERE
 // >>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 inString = input.nextLine(); //read 1 line at a time
-                Scanner scnr = new Scanner(inString);
+                Scanner scnr = new Scanner(inString); //new string stream
                 scnr.useDelimiter("\\b");
 
                 while (scnr.hasNext()) {
-                    aWord = scnr.next();
+                    aWord = scnr.next();    //iterating each word one by one
+
+                    //if the current word contains all characters
                     if (aWord.matches("[a-zA-Z]+")) {
+
+                        //check if the current word is in the dictionary
                         boolean spellCorrect = checkWord(aWord, theDictionary);
                         Wordlet wordToAdd = new Wordlet(aWord, spellCorrect);
                         myLines.addWordlet(wordToAdd);
                     }
+
+                    //if the current word is not a character aka punctuation marks
                     else{
                         Wordlet otherChars = new Wordlet(aWord, true);
                         myLines.addWordlet(otherChars);
